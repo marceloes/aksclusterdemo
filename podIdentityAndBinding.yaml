@@ -1,0 +1,17 @@
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentity
+metadata:
+    name: podidentity                 # The name of your Azure identity
+    namespace: ingress-basic
+spec:
+    type: 0                                 # Set type: 0 for managed identity
+    resourceID: /subscriptions/{{sub}}/resourcegroups/lennox-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/podidentity
+    clientID: "{{client id}}"   # The clientId of the User-assigned managed identity that you created earlier
+---
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentityBinding
+metadata:
+    name: azure-pod-identity-binding
+spec:
+    azureIdentity: "podidentity"      # The name of your Azure identity
+    selector: azure-pod-identity-binding-selector
